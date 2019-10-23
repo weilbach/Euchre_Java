@@ -110,11 +110,11 @@ public class Player {
     }
 
     public int worstCard(String trump) {
-        int handSize = handSize();
+        int handsize = handSize();
         int minIndex = 0;
         Card minCard = hand.get(0);
         int minRank = minCard.powers.get(minCard.rank);
-        for (int i = 1; i < handSize; i++) {
+        for (int i = 1; i < handsize; i++) {
             Card compCard = hand.get(i);
             int compRank = compCard.powers.get(compCard.rank);
 

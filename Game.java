@@ -106,7 +106,6 @@ public class Game {
             for (int j = 0; j < 4; j++) {
                 starter = starter % 4; 
                 Player next = inputList.get(starter);
-                // System.out.println(lead);
                 Card curr = next.chooseCard(trump, lead, winningCard, winningTeam, position);
                 if (j == 0) {
                     setLead(curr.suit);
@@ -183,6 +182,5 @@ public class Game {
         Game euchre = new Game(); 
         euchre.playGame(euchreDeck, inputList);
 
-  
     }
 }
