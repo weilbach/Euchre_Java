@@ -55,8 +55,9 @@ public class Deck {
     }
 
     public Card dealCard() {
-        Card toReturn = cards.get(-1);
-        cards.remove(-1);
+        int size = deckSize() - 1; 
+        Card toReturn = cards.get(size);
+        cards.remove(size);
         return toReturn;
     }
 
@@ -76,6 +77,30 @@ public class Deck {
                 p4.hand.add(dealCard()); 
             }   
         }   
+    }
+
+    public void resetDeck() {
+        cards.clear();
+        String ranks[]  =  new String[]{"9", "10", "jack", "queen", "king", "ace"}; 
+        String suit[] = new String[]{"Spades", "Clubs", "Hearts", "Diamonds"}; 
+        int ind = 0;
+        int ind2 = 0;
+        String color;
+
+        for (int i = 0; i < 24; i++) {
+            ind = i % 6;
+            if (i > 0 && i % 6 == 0) {
+                ind2++;
+            }
+            if (ind2 <= 1) {
+                color = "black";
+            }
+            else {
+                color = "red";
+            }
+            Card toAdd = new Card(suit[ind2], ranks[ind], color);
+            cards.add(toAdd); 
+        }
     }
 
     public static void main(String[] args) {

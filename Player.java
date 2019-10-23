@@ -219,12 +219,12 @@ public class Player {
         Card bestCard = hand.get(bestInd);
         // String lead = game.getLead();
         
-        if (position == 1) {
+        if (position == 0) {
             return playCard(bestInd);
             // game.setLead(bestCard.getSuit());
         }
 
-        if (position == 2) {
+        if (position == 1) {
             if (hasLead(lead))
             if (bestCard.compareCard(winningCard, trump, lead)) {
                 return playCard(bestInd);
@@ -235,7 +235,7 @@ public class Player {
         //this isn't finished
         }
 
-        if (position == 3) {
+        if (position == 2) {
             if (winningCard.suit != trump) {
                 if (bestCard.compareCard(winningCard, trump, lead)) {
                     return playCard(bestInd);
@@ -257,7 +257,7 @@ public class Player {
             }
         }
 
-        if (position == 4) {
+        if (position == 3) {
             if (hasLead(lead)) {
                 System.out.println("under development");
             }
