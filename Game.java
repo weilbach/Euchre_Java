@@ -81,7 +81,16 @@ public class Game {
             }
             playHand(inputList);
             inputDeck.resetDeck();
-
+        }
+        if (team1Score >= 10) {
+            String name1 = inputList.get(0).name;
+            String name2 = inputList.get(2).name;
+            System.out.println(name1 + " and " + name2 + " won the game!");
+        }
+        else {
+            String name1 = inputList.get(1).name;
+            String name2 = inputList.get(3).name;
+            System.out.println(name1 + " and " + name2 + " won the game!");
         }
     }
 
@@ -117,18 +126,20 @@ public class Game {
             }
             starter = getWinningPosition();
             if (getWinningTeam() == 0) {
-                team1tricks++;
+                team1tricks++;  
             }
             else {
-                team2tricks++;
+                team2tricks++;  
             }
         }
         //this is after all the cards were played 
         if (team1tricks > team2tricks) {
             winner = 0;
+            System.out.println("Team 1 won the trick");
         }
         else {
             winner = 1;
+            System.out.println("Team 2 won the trick");
         }
         incrementTeamScore(winner);
         
