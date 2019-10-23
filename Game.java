@@ -11,7 +11,7 @@ public class Game {
     int winningPosition = 0;
     int winningTeam = 0;
     String trump;
-    static String lead;
+    static String lead = "oof";
     Card winningCard = new Card("garbage", "garbage", "garbage");
 
     Game() {
@@ -94,9 +94,10 @@ public class Game {
         int team2tricks = 0;
         int winner = -1;
         for (int i = 0; i < 5; i++) {
-            for (int j = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 starter = starter % 4; 
                 Player next = inputList.get(starter);
+                // System.out.println(lead);
                 Card curr = next.chooseCard(trump, lead, winningCard, winningTeam, position);
                 if (j == 0) {
                     setLead(curr.suit);

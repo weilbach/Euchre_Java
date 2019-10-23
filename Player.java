@@ -213,53 +213,143 @@ public class Player {
         return false;
     }
 
+    public int worstLead(String trump, String lead) {
+        int worstInd = 0;
+        Card worst = new Card("garbage", "garbage", "garbage"); 
+        int handsize = handSize();
+        for (int i = 0; i < handsize; i++) {
+            Card temp = hand.get(i);
+            if (temp.suit != lead) {
+                continue; 
+            }
+            if (worst.suit == "garbage") {
+                worst = temp;
+                worstInd = i;
+            }
+            else {
+                if (worst.compareCard(temp, trump, lead)) {
+                    worst = temp;
+                    worstInd = i;
+                }
+            }
+        }
+
+        return worstInd;
+    }
+
+    public int bestLead(String lead, String trump) {
+        int bestInd = 0; 
+        Card best = new Card("garbage", "garbage", "garbage");
+        int handsize = handSize();
+        for (int i = 0; i < handsize; i++) {
+            Card temp = hand.get(i);
+            if (temp.suit != lead) {
+                continue; 
+            }
+            if (best.suit == "garbage") {
+                best = temp;
+                bestInd = i;
+            }
+            else {
+                if (!best.compareCard(temp, trump, lead)) {
+                    best = temp;
+                    bestInd = i;
+                }
+            }
+        }
+
+        return bestInd;
+    }
+
     public Card chooseCard(String trump, String lead, Card winningCard, int winningTeam, int position) {
+        //this function could use logic to assist playing your worst trump 
+        //when you don't have any of the lead suit
         int bestInd = bestCard(trump);
         int worstInd = worstCard(trump);
+        int worstLead = worstLead(trump, lead);
+        int bestLead = bestLead(lead, trump);
         Card bestCard = hand.get(bestInd);
-        // String lead = game.getLead();
+        Card bestLeadCard = hand.get(bestLead); 
         
         if (position == 0) {
             return playCard(bestInd);
-            // game.setLead(bestCard.getSuit());
         }
 
         if (position == 1) {
-            if (hasLead(lead))
-            if (bestCard.compareCard(winningCard, trump, lead)) {
-                return playCard(bestInd);
+            if (hasLead(lead)) {
+                if (bestLeadCard.compareCard(winningCard, trump, lead)) {
+                    return playCard(bestLead);
+                }
+                else {
+                    return playCard(worstLead); 
+                }
             }
             else {
-                return playCard(worstInd); 
+                if (bestCard.compareCard(winningCard, trump, lead)) {
+                    return playCard(bestInd);
+                }   
+                else {
+                    return playCard(worstInd); 
+                }
             }
-        //this isn't finished
         }
 
         if (position == 2) {
-            if (winningCard.suit != trump) {
-                if (bestCard.compareCard(winningCard, trump, lead)) {
-                    return playCard(bestInd);
+            if (hasLead(lead)) {
+                if (winningTeam == getTeam()) {
+                    if (winningCard.powers.get(winningCard.rank) > 2
+                        || !bestLeadCard.compareCard(winningCard, trump, lead)) { 
+                        return playCard(worstLead);
+                    } 
+                    else {
+                        return playCard(bestLead); 
+                    }
                 }
                 else {
-                    return playCard(worstInd); 
+                    if (bestLeadCard.compareCard(winningCard, trump, lead)) {
+                        return playCard(bestLead);
+                    }
+                    else {
+                        return playCard(worstLead); 
+                    }
                 }
             }
-            else if (winningCard.suit == trump && winningCard.powers.get(winningCard.rank) <= 2) {
-                if (bestCard.compareCard(winningCard, trump, lead)) {
-                    return playCard(bestInd);
+            else {
+                if (winningTeam == getTeam()) {
+                    //this could be wrong
+                    if (winningCard.powers.get(winningCard.rank) <= 2) {
+                        if (bestCard.compareCard(winningCard, trump, lead)) {
+                            return playCard(bestInd);
+                        }  
+                    }
+                    else {
+                        return playCard(worstInd); 
+                    }
                 }
                 else {
-                    return playCard(worstInd); 
-                }
-            }
-            else if (winningTeam == getTeam()) {
-                return playCard(worstInd); 
+                    if (bestCard.compareCard(winningCard, trump, lead)) {
+                        return playCard(bestInd);
+                    }
+                    else {
+                        return playCard(worstInd); 
+                    }
+                }  
             }
         }
 
         if (position == 3) {
             if (hasLead(lead)) {
-                System.out.println("under development");
+                if (winningTeam == getTeam()) {
+                    return playCard(worstLead); 
+                }
+                else {
+                    if (bestLeadCard.compareCard(winningCard, trump, lead)) {
+                        return playCard(bestLead);
+                    }
+                    else {
+                        return playCard(worstLead); 
+                    }
+                }
             }
             else {
                 if (winningTeam == getTeam()) {
