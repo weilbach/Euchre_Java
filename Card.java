@@ -25,6 +25,10 @@ public class Card {
         return suit; 
     }
 
+    public void updateBauer(String bauer) {
+        rank = bauer;
+    }
+
     public boolean compareCard(Card inputCard, String trump, String lead) {
         if (suit == trump && inputCard.suit != trump) {
             return true; 

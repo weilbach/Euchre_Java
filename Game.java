@@ -11,6 +11,7 @@ public class Game {
     int winningPosition = 0;
     int winningTeam = 0;
     String trump;
+    String trumpColor;
     static String lead = "oof";
     Card winningCard = new Card("garbage", "garbage", "garbage");
 
@@ -29,6 +30,12 @@ public class Game {
     }
     public void setTrump(String inputTrump) {
         trump = inputTrump;
+        if (trump == "Spades" || trump == "Club") {
+            trumpColor = "black";
+        }
+        else {
+            trumpColor = "red";
+        }
     }
     public String getTrump() {
         return trump;
@@ -80,6 +87,18 @@ public class Game {
             if (callTeam == -1) {
                 callTeam = chooseTrump2(inputList);
             }
+            for (Player curPlayer : inputList) {
+                for (Card curCard : curPlayer.hand) {
+                    if (curCard.suit == trump && curCard.rank == "jack") {
+                        curCard.updateBauer("right");
+                    }
+                    else if (curCard.color == trumpColor && curCard.rank == "jack") {
+                        curCard.updateBauer("left");
+                    }; 
+
+                }
+            }
+
             playHand(inputList, callTeam);
             incrementDealer();
             inputDeck.resetDeck();
