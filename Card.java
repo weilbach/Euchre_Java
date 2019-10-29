@@ -21,12 +21,17 @@ public class Card {
         powers.put("right", 8); 
     }
 
+    public String toString() {
+        return rank + " of " + suit;
+    }
+
     public String getSuit() {
         return suit; 
     }
 
-    public void updateBauer(String bauer) {
+    public void updateBauer(String bauer, String trump) {
         rank = bauer;
+        suit = trump;
     }
 
     public boolean compareCard(Card inputCard, String trump, String lead) {

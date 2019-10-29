@@ -26,10 +26,12 @@ public class Game {
     }
 
     public int getDealer() {
-        return dealer;
+        //do you need to use this?
+        return this.dealer;
     }
+
     public void setTrump(String inputTrump) {
-        trump = inputTrump;
+        this.trump = inputTrump;
         if (trump == "Spades" || trump == "Club") {
             trumpColor = "black";
         }
@@ -37,33 +39,43 @@ public class Game {
             trumpColor = "red";
         }
     }
+
     public String getTrump() {
         return trump;
     }
+
     public static void setLead(String inputLead) {
         lead = inputLead;
     }
+
     public static String getLead() {
         return lead;
     }
+
     public void setWinningCard(Card inputCard) {
         winningCard = inputCard;
     }
+
     public Card getWinningCard() {
         return winningCard;
     }
+
     public void setWinningPosition(int inputPosition) {
         winningPosition = inputPosition;
     }
+
     public int getWinningPosition() {
         return winningPosition;
     }
+
     public void setWinningTeam(int inputTeam) {
         winningTeam = inputTeam % 2;
     }
+
     public int getWinningTeam() {
         return winningTeam; 
     }
+
     public void incrementTeamScore(int winner, int winAmount) {
         if (winner == 0) {
             team1Score += winAmount;
@@ -95,7 +107,6 @@ public class Game {
                     else if (curCard.color == trumpColor && curCard.rank == "jack") {
                         curCard.updateBauer("left");
                     }; 
-
                 }
             }
 
@@ -223,6 +234,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
+        //create a variable that saves how many moves overall were played
         Player p1 = new Player("Justin", 1);
         Player p2 = new Player("Sarah", 2); 
         Player p3 = new Player("Jourdan", 1); 
