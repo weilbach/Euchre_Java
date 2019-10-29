@@ -102,10 +102,10 @@ public class Game {
             for (Player curPlayer : inputList) {
                 for (Card curCard : curPlayer.hand) {
                     if (curCard.suit == trump && curCard.rank == "jack") {
-                        curCard.updateBauer("right");
+                        curCard.updateBauer("right", trump);
                     }
                     else if (curCard.color == trumpColor && curCard.rank == "jack") {
-                        curCard.updateBauer("left");
+                        curCard.updateBauer("left", trump);
                     }; 
                 }
             }
