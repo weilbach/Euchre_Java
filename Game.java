@@ -57,17 +57,18 @@ public class Game {
     public int getWinningTeam() {
         return winningTeam; 
     }
-    public void incrementTeamScore(int winner) {
+    public void incrementTeamScore(int winner, int winAmount) {
         if (winner == 0) {
-            team1Score++;
+            team1Score += winAmount;
         }
         else {
-            team2Score++;
+            team2Score += winAmount;
         }
     }
 
 
     public void playGame(Deck inputDeck, List <Player> inputList) {
+        int callTeam = -1;
         while (team1Score < 10 || team2Score < 10) {
             inputDeck.shuffleDeck();
             inputDeck.dealCards(inputList.get(0), 
@@ -75,11 +76,12 @@ public class Game {
                 inputList.get(2),
                 inputList.get(3));   
             String trump = inputDeck.dealCard().getSuit();
-            this.chooseTrump(inputList, trump);
-            if (getTrump() == "not chosen") {
-                chooseTrump2(inputList);
+            callTeam = chooseTrump(inputList, trump);
+            if (callTeam == -1) {
+                callTeam = chooseTrump2(inputList);
             }
-            playHand(inputList);
+            playHand(inputList, callTeam);
+            incrementDealer();
             inputDeck.resetDeck();
         }
         if (team1Score >= 10) {
@@ -94,7 +96,7 @@ public class Game {
         }
     }
 
-    public void playHand(List <Player> inputList) {
+    public void playHand(List <Player> inputList, int callTeam) {
         int starter = getDealer() + 1;
         String trump = getTrump(); 
         int winningTeam = -1;
@@ -102,6 +104,7 @@ public class Game {
         int team1tricks = 0;
         int team2tricks = 0;
         int winner = -1;
+        int winAmount = 1;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
                 starter = starter % 4; 
@@ -134,32 +137,52 @@ public class Game {
         //this is after all the cards were played 
         if (team1tricks > team2tricks) {
             winner = 0;
+            if (callTeam == 0) {
+                winAmount = (team1tricks != 5) ? 1 : 2;
+            }
+            else {
+                winAmount = (team1tricks != 5) ? 2 : 3;
+            }
             System.out.println("Team 1 won the trick");
         }
         else {
             winner = 1;
+            if (callTeam == 1) {
+                winAmount = (team2tricks != 5) ? 1 : 2;
+            }
+            else {
+                winAmount = (team2tricks != 5) ? 2 : 3;
+            }
             System.out.println("Team 2 won the trick");
         }
-        incrementTeamScore(winner);
-        
+        incrementTeamScore(winner, winAmount);  
     }
 
-    public void chooseTrump(List <Player> inputList, String trump) {
+    public int chooseTrump(List <Player> inputList, String trump) {
         int dealInd = getDealer();
+        int callTeam = -1; 
         for (int i = 0; i < 4; i++) {
             int playerInd = (dealInd + i) % 4;
             Player curPlayer = inputList.get(playerInd);
             int trumpCards = curPlayer.countTrump(trump);
             if (trumpCards >= 2) {
                 setTrump(trump);
-                return;
+                if (playerInd == 0 || playerInd == 2) {
+                    callTeam = 0;
+                    return callTeam;
+                }
+                else {
+                    callTeam = 1;
+                    return callTeam;
+                } 
             }
         }
-        setTrump("not chosen"); 
+        return callTeam; 
     }
 
-    public void chooseTrump2(List <Player> inputList) {
+    public int chooseTrump2(List <Player> inputList) {
         int dealInd = getDealer();
+        int callTeam = -1;
         for (int i = 0; i < 4; i++) {
             int playerInd = (dealInd + i) % 4;
             Player curPlayer = inputList.get(playerInd);
@@ -167,8 +190,17 @@ public class Game {
             if (number >= 3 || i == 3) {
                 String suitChoice = curPlayer.findSuit(number);
                 setTrump(suitChoice);
+                if (playerInd == 0 || playerInd == 2) {
+                    callTeam = 0;
+                    return callTeam;
+                }
+                else {
+                    callTeam = 1;
+                    return callTeam;
+                } 
             }
         }
+        return callTeam; //it should never get here thoooooooo
     }
 
     public static void main(String[] args) {
